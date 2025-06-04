@@ -1,0 +1,39 @@
+# macOS
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+
+# Node.js
+node_modules/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Dify docker env
+dify/docker/.env
+
+# System files
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Others
+*.swp
+*.swo
+*.bak
+*.tmp
