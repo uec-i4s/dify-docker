@@ -4,8 +4,8 @@
 set -e
 set -o pipefail
 
-# 環境に合わせたディレクトリパスを設定
-DIFFY_DIR="$HOME/llm/dify/dify"
+# プロジェクト直下のdifyディレクトリを参照
+DIFFY_DIR="./dify"
 DOCKER_DIR="$DIFFY_DIR/docker"
 TIMESTAMP=$(date +%s)
 BACKUP_SUFFIX=".$TIMESTAMP.bak"
@@ -39,32 +39,4 @@ else
     echo "⚠ docker-compose.yaml が見つかりません。スキップします。"
 fi
 
-if [[ -f "$DOCKER_DIR/.env" ]]; then
-    cp "$DOCKER_DIR/.env" "$DOCKER_DIR/.env$BACKUP_SUFFIX"
-    echo "✔ .env → .env$BACKUP_SUFFIX にバックアップしました。"
-else
-    echo "⚠ .env が見つかりません。スキップします。"
-fi
-
-# 最新コードの取得
-echo "Gitから最新コードを取得します…"
-git checkout main
-git pull origin main
-
-# Dockerサービス停止
-echo "Difyサービスを停止します…"
-cd "$DOCKER_DIR"
-docker compose down
-
-# 必要に応じて設定ファイルの変更を手動確認…
-
-# Dockerサービス再起動
-echo "Difyサービスを再起動します…"
-docker compose up -d
-
-# コンテナ状態確認
-sleep 10
-echo "=== コンテナの状態を確認 ==="
-docker compose ps
-
-echo "🎉 Difyのアップデートが完了しました！"
+# 以降の処理も相対パスで統一してください（必要に応じて追加）
