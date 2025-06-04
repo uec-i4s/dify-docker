@@ -6,7 +6,6 @@ set -o pipefail
 
 # プロジェクト直下のdifyディレクトリを参照
 DIFFY_DIR="./dify"
-DOCKER_DIR="$DIFFY_DIR/docker"
 TIMESTAMP=$(date +%s)
 BACKUP_SUFFIX=".$TIMESTAMP.bak"
 
@@ -20,6 +19,9 @@ fi
 
 # difyディレクトリに移動
 cd "$DIFFY_DIR"
+
+# dockerディレクトリのパスを再定義（カレントがdify/になるため）
+DOCKER_DIR="./docker"
 
 # 未コミットの変更を一時退避
 if [[ -n $(git status --porcelain) ]]; then
