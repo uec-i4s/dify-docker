@@ -1,11 +1,17 @@
 #!/bin/bash
 set -e
 
-# Dify docker ディレクトリへ移動
+# Difyリポジトリのクローン（最新リリース取得）
 if [ ! -d "dify/docker" ]; then
-  echo "dify/docker ディレクトリが見つかりません。dify のクローンが必要です。"
-  echo "例: git clone https://github.com/langgenius/dify.git --branch 0.15.3"
-  exit 1
+  echo "dify/docker ディレクトリが見つかりません。最新バージョンを取得してクローンします。"
+  # GitHub APIから最新リリースのタグ名を取得
+  LATEST_TAG=$(curl -s https://api.github.com/repos/langgenius/dify/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+  if [ -z "$LATEST_TAG" ]; then
+    echo "最新リリースの取得に失敗しました。"
+    exit 1
+  fi
+  echo "最新バージョン: $LATEST_TAG"
+  git clone https://github.com/langgenius/dify.git --branch "$LATEST_TAG"
 fi
 
 cd dify/docker
