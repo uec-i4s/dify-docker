@@ -23,8 +23,8 @@ yarn-error.log*
 .env.*
 !.env.example
 
-# Dify docker env
-dify/docker/.env
+# クローンしたDifyリポジトリ
+dify/
 
 # System files
 Thumbs.db
