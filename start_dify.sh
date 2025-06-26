@@ -11,7 +11,7 @@ if [ ! -d "dify/docker" ]; then
     exit 1
   fi
   echo "最新バージョン: $LATEST_TAG"
-  git clone https://github.com/langgenius/dify.git --branch "$LATEST_TAG"
+  git clone https://github.com/langgenius/dify.git --branch "$LATEST_TAG" --depth 1
 fi
 
 cd dify/docker
