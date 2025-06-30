@@ -1,78 +1,77 @@
-## 📘 README: Dify Update Script
+## Dify Docker セットアップツール
 
-### 概要
-このスクリプトは、Dify（自己ホスト型LLMプラットフォーム）のコードとDockerサービスを自動でアップデートするための簡易自動化ツールです。  
-**バックアップ・コード更新・Docker再起動**を一括実行できます。
+Difyプラットフォームの自動セットアップとアップデートを行うスクリプト集。
+初回セットアップから継続的なアップデートまでを自動化します。
 
----
+## ディレクトリ構成
 
-## 📂 ディレクトリ構成（例）
 ```
-~/llm/dify/
-├── dify/                  ← Dify本体（Gitクローン先）
-│   └── docker/            ← Docker構成ファイル（docker-compose.yaml など）
-├── update_dify.sh         ← 本スクリプト
+dify-docker/
+├── dify/                ← Dify本体（自動クローン先）
+│   └── docker/          ← Docker構成ファイル
+├── start_dify.sh        ← 初回セットアップ・起動スクリプト
+├── update_dify.sh       ← アップデート・バックアップスクリプト
+├── .gitignore
+└── README.md
 ```
 
----
+## 使用方法
 
-## 🚀 使い方
+### 1. 実行権限の付与
 
-1. ### スクリプトの実行権限を付与
-   ```bash
-   chmod +x update_dify.sh
-   ```
+```bash
+chmod +x start_dify.sh update_dify.sh
+```
 
-2. ### 実行
-   ```bash
-   ./update_dify.sh
-   ```
+### 2. 初回セットアップ・起動
 
----
+```bash
+./start_dify.sh
+```
 
-## 🔧 スクリプトの動作内容
+最新リリースのDifyを自動クローンし、Docker環境を構築・起動します。
+Dockerへのアクセス権限が必要です。
 
-| ステップ | 内容 |
-|---|---|
-| 1 | `~/llm/dify/dify` に移動し、未コミットの変更があれば `git stash` で一時退避 |
-| 2 | `docker/docker-compose.yaml` と `.env` をタイムスタンプ付きでバックアップ |
-| 3 | `git pull` で Dify の最新コードを取得 |
-| 4 | Docker コンテナを停止 (`docker compose down`) |
-| 5 | Docker コンテナを再起動 (`docker compose up -d`) |
-| 6 | コンテナの状態確認 (`docker compose ps`) |
+### 3. アップデート
 
----
+```bash
+./update_dify.sh
+```
 
-## 📦 バックアップファイルの命名例
+設定ファイルをバックアップし、最新コードを取得してDockerコンテナを再起動します。
 
-- `docker-compose.yaml.1740791255.bak`
-- `.env.1740791255.bak`
+## スクリプト動作詳細
 
-> 各ファイルにタイムスタンプを付加し、過去のバックアップと衝突しません。
+### start_dify.sh
+- GitHub APIから最新リリースを取得し自動クローン
+- 設定ファイル（.env）の自動生成
+- Docker環境の構築・起動
+- コンテナ状態の確認
 
----
+### update_dify.sh
+- 未コミット変更の一時退避
+- 設定ファイルのタイムスタンプ付きバックアップ
+- 最新コードの取得（git pull）
+- Dockerコンテナの再起動
 
-## ⚠ 注意事項
+## 必要環境
 
-- **`sudo`不要**：通常ユーザー権限で実行できます。過去に `root` で `.bak` ファイルを作成してしまった場合は、所有権を戻してください：
-  ```bash
-  sudo chown i4s-one:i4s-one ~/llm/dify/dify/docker/docker-compose.yaml.bak
-  ```
+- Docker & Docker Compose
+- Git
+- curl（GitHub API使用）
+- Bashシェル
 
-- **バックアップファイルが増える場合**：適宜削除またはバックアップディレクトリに移動する運用を推奨。
+## 注意事項
 
----
+- `dify/`ディレクトリは管理対象外（.gitignore設定済み）
+- プロジェクトルート（dify-docker/）で実行すること
+- Dockerデーモンへの適切なアクセス権限が必要
 
-## 📝 カスタマイズ例
+## 参考リンク
 
-- Volume バックアップを追加したい  
-- バックアップ保存先を `$HOME/dify_backup` に変更したい  
-- Slack通知など自動化フックを入れたい  
+- [Dify公式リポジトリ](https://github.com/langgenius/dify)
+- [Docker公式ドキュメント](https://docs.docker.com/)
 
-など、カスタマイズも柔軟に可能です。ご相談ください。
+## ライセンス
 
----
-
-## 👨‍💻 作者
-- スクリプト作成者: *あなたのお名前 or GitHubリンク*
-- Dify公式: https://github.com/langgenius/dify
+MIT License
